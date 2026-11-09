@@ -1,13 +1,6 @@
 {
   "scope": "Отдельная учебная база; прямые вызовы функций, не HTTP-проверка",
   "source_sha256": {
-    "app/._config.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
-    "app/._crud.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
-    "app/._db.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
-    "app/._main.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
-    "app/._redis_client.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
-    "app/._schemas.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
-    "app/._security.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
     "app/config.py": "d15a27e72366ca812fcb297e3a334a5bc57aca7bd5493a7855087b4b28ee2149",
     "app/crud.py": "e6433a8d7dfc06f07d063451cab0ecf8eeb2c4e3cad7344f74d5d9ec0da10c3e",
     "app/db.py": "f15c32851a24ece261351654e61e354cec41550127df0ac881ef085e3171dc36",

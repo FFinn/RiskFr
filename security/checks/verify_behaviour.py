@@ -49,7 +49,8 @@ async def reset():
 async def main():
     global gate, arrivals
     result = {"scope": "Отдельная учебная база; прямые вызовы функций, не HTTP-проверка",
-              "source_sha256": {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(Path('app').glob('*.py'))}}
+              "source_sha256": {str(p): hashlib.sha256(p.read_bytes()).hexdigest()
+                                for p in sorted(Path('app').glob('*.py')) if not p.name.startswith('._')}}
     try:
         importlib.import_module("app.main")
         result["application_import"] = "успешно"
