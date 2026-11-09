@@ -1,10 +1,10 @@
 # Повторение проверок
 
-Нужны Docker Compose, Bash, OpenSSL и Python 3.12. Все команды выполняются из корня репозитория, если не указано иное.
+Нужны Docker Compose, Git, Bash, OpenSSL и Python 3.12. Все команды выполняются из корня репозитория, если не указано иное.
 
 ## Запуск приложения и проверка через HTTP
 
-Для запуска исправлены импорты `app/main.py` и добавлен корневой `Dockerfile`. Файл `compose.check.yml` создаёт отдельную учебную базу и Redis. Их порты не публикуются; API доступен по адресу `http://127.0.0.1:18081`, описание запросов — по адресу `http://127.0.0.1:18081/docs`.
+Исходные файлы приложения сохранены без изменений. При сборке `Dockerfile` копирует их в образ и применяет `security/patches/launch-imports.patch` только к этой копии. Правка исправляет имена импортов в `app/main.py`; SQL и денежная логика не меняются. Файл `compose.check.yml` создаёт отдельную учебную базу и Redis. Их порты не публикуются; API доступен по адресу `http://127.0.0.1:18081`, описание запросов — по адресу `http://127.0.0.1:18081/docs`.
 
 Проверка сбрасывает данные учебной базы. Не подставляйте в её настройки рабочую PostgreSQL или Redis.
 
@@ -19,10 +19,12 @@ docker compose --env-file .assessment.env -p riskfr-http \
 
 docker compose --env-file .assessment.env -p riskfr-http \
   -f compose.check.yml run --rm -T check \
-  > security/reports/http-behaviour.json
+  > security/reports/http-repeat.json
 ```
 
-Результат сохраняется в `security/reports/http-behaviour.json`. После проверки удалить временные контейнеры, данные и файл с паролем:
+Новый результат сохраняется в `security/reports/http-repeat.json`. Сохранённые журналы [первой проверки](reports/http-behaviour.json) и [проверки после отделения правки](reports/http-patch-check.json) содержат по 47 запросов с совпадающими результатами. Контрольная сумма `app/main.py` в испытанных образах одинакова.
+
+После проверки удалить временные контейнеры, данные и файл с паролем:
 
 ```bash
 docker compose --env-file .assessment.env -p riskfr-http \
@@ -38,24 +40,50 @@ rm .assessment.env
 python3.12 -m venv .venv
 . .venv/bin/activate
 python -m pip install semgrep==1.184.0
+```
+
+Проверить собственные правила и выполнить анализ семи исходных файлов:
+
+```bash
 semgrep --test --config security/rules/bank.yml \
   security/checks/rule_cases.py --metrics=off --disable-version-check
 semgrep scan --config security/rules/bank.yml \
   --metrics=off --disable-version-check \
-  --json --output security/reports/semgrep-http.json app
+  --json --output security/reports/semgrep-repeat.json app
 ```
 
-Исходный отчёт `semgrep.json` относится к версии `4903ad2`. Повторный отчёт после исправления запуска сохраняется отдельно, в `semgrep-http.json`.
+`semgrep.json` содержит первоначальный анализ исходной версии `4903ad2`. `semgrep-http.json` — сохранённый анализ испытанной копии с исправленными импортами. Команда выше создаёт новый файл `semgrep-repeat.json` и не заменяет эти результаты.
 
 Ожидаются три успешно проверенных правила, три срабатывания в приложении и пустой массив ошибок. Два предупреждения о динамическом SQL разобраны вручную и признаны ложными срабатываниями. Файл `security/checks/rule_cases.py` содержит искусственные контрольные примеры и не входит в сканирование приложения.
 
+Выполнить анализ с готовыми наборами:
+
+```bash
+semgrep scan --config p/python --config p/sql-injection \
+  --metrics=off --disable-version-check \
+  --json --output security/reports/semgrep-community-repeat.json app
+```
+
+В приложенном [отчёте](reports/semgrep-community.json) готовые наборы проверили семь файлов: загружено 185 уникальных правил, применено 151 правило Python, срабатываний и ошибок нет. Команда, версия и контрольные суммы наборов приведены в [журнале](reports/semgrep-community-run.json).
+
+Для точного повторения с сохранёнными версиями правил:
+
+```bash
+semgrep scan --config security/rules/community/p-python.yml \
+  --config security/rules/community/p-sql-injection.yml \
+  --metrics=off --disable-version-check \
+  --json --output security/reports/semgrep-community-snapshot-repeat.json app
+```
+
+Готовые наборы из сети могут обновляться. Для сравнения с приложенным результатом используются сохранённые файлы правил. Отсутствие их срабатываний не закрывает уязвимости, подтверждённые собственными правилами и ручными проверками.
+
 ## Проверка функций исходной версии
 
-Для повторения первоначальной проверки нужна версия до исправления запуска. Изменение `57b770f` содержит исходное приложение и средства проверки:
+Проверка выполняется на исходных файлах без применения правки запуска. Создать отдельную копию текущей версии, чтобы сохранить приложенный журнал:
 
 ```bash
 assessment_original=$(mktemp -d)
-git worktree add --detach "$assessment_original" 57b770f
+git worktree add --detach "$assessment_original" HEAD
 (
   cd "$assessment_original"
   bash security/checks/run-isolated.sh
@@ -68,15 +96,17 @@ git worktree add --detach "$assessment_original" 57b770f
 
 ## Модель угроз
 
-Открыть `security/model/riskfr.json` в OWASP Threat Dragon 2.6.2 через импорт локальной модели. Проверить четыре основных элемента, шесть стрелок и три пунктирные границы. У пользователя, PostgreSQL и Redis по три угрозы, у API пять. Ещё четыре угрозы прикреплены к потокам.
+Открыть `security/model/riskfr.json` в настольном OWASP Threat Dragon 2.6.2. Проверить четыре основных элемента, шесть стрелок и три пунктирные границы. У пользователя, PostgreSQL и Redis по три угрозы, у API пять. Ещё четыре угрозы прикреплены к потокам.
 
-Открыть отчёт модели. Сводка: 18 угроз, 17 открытых, одна снижена существующей параметризацией SQL. Отчёт можно распечатать в PDF.
+На странице модели нажать `Report`, затем `PDF Report` и сохранить файл. Приложенный [PDF](reports/threat-dragon-report.pdf) выгружен этой командой: семь страниц, диаграмма, 18 угроз, из них 17 открытых и одна снижена существующей параметризацией SQL.
 
 ## Результаты для DefectDojo
 
-- `security/reports/semgrep.json` и `semgrep-http.json`: тип загрузки `Semgrep JSON Report`. При загрузке указать соответствующую версию приложения.
+- `security/reports/semgrep.json`: собственные правила, три срабатывания; тип загрузки `Semgrep JSON Report`.
+- `security/reports/semgrep-community.json`: готовые правила, срабатываний нет; тот же тип загрузки, отдельное испытание.
+- `security/reports/semgrep-http.json`: сохранённый анализ испытанной копии, три срабатывания; при загрузке указать применение отдельной правки импортов.
 - `security/reports/manual-idor.json`: тип `Generic Findings Import`; карточку также можно создать вручную по `security/IDOR.md`.
-- Полный порядок обработки приведён в разделе 6 итогового отчёта. Ручная находка IDOR проверяется отдельно от повторного сканирования Semgrep.
+- Полный порядок обработки приведён в разделе 6 итогового отчёта. Ручная находка IDOR и результаты собственных правил не закрываются по пустому результату готовых наборов.
 
 ## Сравнение с исходной версией
 
@@ -85,4 +115,4 @@ git diff 4903ad261d30bc2d1171e455f916e445a7963b4e -- \
   app requirements.txt docker-compose.yml
 ```
 
-В приложении изменены имена импортируемой функции и моделей в `app/main.py`. Файлы сборки и учебного запуска добавлены отдельно. SQL в `app/crud.py` и `app/db.py`, зависимости и исходный `docker-compose.yml` должны совпадать с выданной версией.
+Команда не должна выводить различий: все исходные файлы приложения, зависимости и `docker-compose.yml` совпадают с выданной версией. Правка импортов находится в `security/patches/launch-imports.patch`, файлы сборки и учебного запуска добавлены отдельно.

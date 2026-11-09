@@ -1,0 +1,57 @@
+Проверка исходного приложения готовыми правилами Semgrep
+
+Исходная версия: 4903ad261d30bc2d1171e455f916e445a7963b4e
+Semgrep: 1.184.0
+Начало: 2026-11-09T08:40:49.665183+00:00
+Окончание: 2026-11-09T08:40:53.434123+00:00
+Команда:
+semgrep scan --config p/python --config p/sql-injection --metrics=off --disable-version-check --json --output security/reports/semgrep-community.json app
+
+Код завершения: 0
+Загружено уникальных правил: 185.
+Правил для Python: 151.
+Проверено файлов: 7.
+Срабатывания: 0.
+Ошибки анализа: 0.
+
+Проверенные файлы:
+app/config.py
+app/crud.py
+app/db.py
+app/main.py
+app/redis_client.py
+app/schemas.py
+app/security.py
+
+Снимки готовых правил:
+security/rules/community/p-python.yml
+SHA-256: de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5
+security/rules/community/p-sql-injection.yml
+SHA-256: 2d42cc98219dca2606c95401e1f5e909dbbd588bee2a3dabea245c7889f3c205
+
+Результат повторной проверки по сохранённым снимкам совпал:
+7 файлов, 0 срабатываний, 0 ошибок.
+
+Вывод: готовые правила не обнаружили совпадений в исследованной версии.
+Этот результат дополняет собственные правила и ручной анализ; выявленные
+ими ошибки проверки личности и денежных операций сохраняют свой статус.
+
+Вывод Semgrep:
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 7 files tracked by git with 185 Code rules:
+  Scanning 7 files with 151 python rules.
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 0 (0 blocking)
+ • Rules run: 151
+ • Targets scanned: 7
+ • Parsed lines: ~100.0%
+ • No ignore information available
+Ran 151 rules on 7 files: 0 findings.
+(need more rules? `semgrep login` for additional free Semgrep Registry rules)

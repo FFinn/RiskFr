@@ -4,6 +4,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY app ./app
+COPY security/patches/launch-imports.patch /tmp/launch-imports.patch
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends patch \
+    && patch --batch --fuzz=0 -p1 < /tmp/launch-imports.patch \
+    && rm /tmp/launch-imports.patch \
+    && apt-get purge -y --auto-remove patch \
+    && rm -rf /var/lib/apt/lists/*
 USER 10001:10001
 EXPOSE 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -18,8 +18,8 @@
   "semgrep_command": "semgrep scan --config security/rules/bank.yml --metrics=off --disable-version-check --json --output security/reports/semgrep.json app",
   "rules_sha256": "33177a1742d7c991bafedcb85ab767ccf5ed67fc47c6dbf56a7dab62de0b090b",
   "threat_dragon_version": "2.6.2",
-  "pdf_origin": "Отчёт модели OWASP Threat Dragon 2.6.2.",
-  "runtime_checks": "Исходная версия: вызовы функций на отдельной базе (behaviour.json). После исправления запуска: HTTP-проверка (http-behaviour.json).",
+  "pdf_origin": "Штатная выгрузка OWASP Threat Dragon 2.6.2: модель riskfr.json открыта в настольном приложении, выбран Report → PDF Report.",
+  "runtime_checks": "Исходные функции проверены на отдельной базе (behaviour.json). HTTP-проверка учебной копии (http-behaviour.json) повторена после вынесения импортов в отдельную правку (http-patch-check.json).",
   "images": {
     "postgres:16": "sha256:f9a7b9ebf6f56201f949db745e47bc423c0f0f8294bafe991cc10bf74b029657",
     "redis:7": "sha256:2e3eb11462c4e3759e6972678dd051d150ff54b1e60714b3c33b701260172a90",
@@ -49,6 +49,97 @@
       "security/reports/http-behaviour.json": "48ca76cee6b438a05e342ae6276884a20e3945b9b4e4669ab46d367ae2de23c1",
       "security/reports/semgrep-http.json": "e2576e5e07cb831bf2ad69dbb400558f830a8c90a9f8b106b4b8ec73f41a9659"
     },
-    "semgrep_command": "semgrep scan --config security/rules/bank.yml --metrics=off --disable-version-check --json --output security/reports/semgrep-http.json app"
+    "semgrep_command": "semgrep scan --config security/rules/bank.yml --metrics=off --disable-version-check --json --output security/reports/semgrep-http.json app",
+    "artifacts_revision": "93ea61c7254aee4824c90212d17d16627d6d089f",
+    "source_note": "Контрольные суммы учебной копии при первоначальной HTTP-проверке. Исходные файлы app/ в текущей сдаваемой версии восстановлены; отдельная правка даёт ту же проверенную копию внутри контейнера."
+  },
+  "pdf_export": {
+    "application": "OWASP Threat Dragon",
+    "version": "2.6.2",
+    "variant": "desktop",
+    "source_file": "security/model/riskfr.json",
+    "source_sha256": "4a169c2fd8b2d0acb2ea19b04bc1a72723da18f4e006a902f66c05f1dfdfffbf",
+    "output_file": "security/reports/threat-dragon-report.pdf",
+    "output_sha256": "174a1daa7e06c11eb214a1ce9b943605d1d5ecceabea0b3a006acb2bc8085082",
+    "pages": 7,
+    "generated_at": "2026-11-09T08:46:04+00:00",
+    "creator": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) ThreatDragon/2.6.2 Chrome/116.0.5845.228 Electron/26.6.10 Safari/537.36",
+    "producer": "Skia/PDF m116",
+    "options": {
+      "show_model_diagrams": true,
+      "show_mitigated_threats": true,
+      "show_out_of_scope_elements": true,
+      "show_empty_elements": true,
+      "show_logo": false,
+      "show_element_properties": false
+    },
+    "postprocessing": false,
+    "documentation": "https://www.threatdragon.com/docs/usage/getting-started.html#threat-model-report"
+  },
+  "community_semgrep": {
+    "run_record": "security/reports/semgrep-community-run.json",
+    "run_record_sha256": "69d470dc510ca8c1c701be7f8852534719a180cd7765bba91c0655b5478fda92",
+    "report": "security/reports/semgrep-community.json",
+    "report_sha256": "4f07d3f697891316e7c35258bdef5b32f8e132f9678efb18f782f9fcc2ac2a00",
+    "command": "semgrep scan --config p/python --config p/sql-injection --metrics=off --disable-version-check --json --output security/reports/semgrep-community.json app",
+    "source_commit": "4903ad261d30bc2d1171e455f916e445a7963b4e",
+    "scanned_files": 7,
+    "python_rules_run": 151,
+    "findings": 0,
+    "errors": 0
+  },
+  "launch_patch_check": {
+    "checked_at_utc": "2026-11-09T08:49:15.393411+00:00",
+    "patch_file": "security/patches/launch-imports.patch",
+    "patch_sha256": "b4027991561cf1df3aadd6330ce8c91a5b96c52d7360b1dd1ec36544b68ea1f1",
+    "application": "Только внутри образа после COPY app ./app; файлы рабочего каталога не изменяются.",
+    "source_matches_original": true,
+    "comparison_command": "git diff 4903ad261d30bc2d1171e455f916e445a7963b4e -- app requirements.txt docker-compose.yml",
+    "image_id": "sha256:530913d3aadb94a9c1198344e01501e62f705c348090a2adbf29a00c3df2445a",
+    "container_user": "10001:10001",
+    "files_sha256": {
+      "Dockerfile": "f5b3d56b30dbcff89ef71bc2f21d8dc7fef08e9782ce4b5f2b47134a34b1f9f9",
+      "compose.check.yml": "49ef9cd61a250d67b1d8828bfdedabf3e75973fa4a60eb3122785116547eeeaf",
+      "security/patches/launch-imports.patch": "b4027991561cf1df3aadd6330ce8c91a5b96c52d7360b1dd1ec36544b68ea1f1",
+      "security/checks/verify_http.py": "59c82b180197a726a7d2169a5fe06e58fdd9eced51fa07d9479e2cc00f1edf31",
+      "security/reports/http-patch-check.json": "330b7974b1a0a123119a70c20b64fb813cf2bd5401731b36d416245ebdf8971e"
+    },
+    "runtime_source_sha256": {
+      "app/config.py": "d15a27e72366ca812fcb297e3a334a5bc57aca7bd5493a7855087b4b28ee2149",
+      "app/crud.py": "e6433a8d7dfc06f07d063451cab0ecf8eeb2c4e3cad7344f74d5d9ec0da10c3e",
+      "app/db.py": "f15c32851a24ece261351654e61e354cec41550127df0ac881ef085e3171dc36",
+      "app/main.py": "c483a1e9b93cf22eba5c32bbbc9a774f247cde2336222b38486eb8f0c5c04d53",
+      "app/redis_client.py": "99df7fdcdc5a91b435a4c5aa97633d207c1d6b0f58e15e5d255729c8409d3ce0",
+      "app/schemas.py": "7892382a4f1ebed44c7cc95e458276d344fbb70e82e52f9bde04d11e79ff1035",
+      "app/security.py": "6e5e95e6191be6d96a8a8b86eb99a563ce8af70c8bd24992519d56eee30ef7e3"
+    },
+    "matches_previous_http_source": true,
+    "http_report": "security/reports/http-patch-check.json",
+    "passed_requests": 47,
+    "sql_database_unchanged": true,
+    "network_override": {
+      "networks": {
+        "access": {
+          "ipam": {
+            "config": [
+              {
+                "subnet": "10.254.250.0/28"
+              }
+            ]
+          }
+        },
+        "assessment": {
+          "ipam": {
+            "config": [
+              {
+                "subnet": "10.254.250.16/28"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "network_note": "Для повторного прогона заданы свободные подсети Docker; внутренняя сеть базы и Redis, состав сервисов и привязка API к 127.0.0.1 сохранены.",
+    "command": "docker compose --env-file <temporary-env> -p riskfr-review -f compose.check.yml -f <network-override> run --rm -T check"
   }
 }

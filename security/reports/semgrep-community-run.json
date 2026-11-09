@@ -1,0 +1,46 @@
+{
+  "source_commit": "4903ad261d30bc2d1171e455f916e445a7963b4e",
+  "source_files_sha256": {
+    "app/config.py": "d15a27e72366ca812fcb297e3a334a5bc57aca7bd5493a7855087b4b28ee2149",
+    "app/crud.py": "e6433a8d7dfc06f07d063451cab0ecf8eeb2c4e3cad7344f74d5d9ec0da10c3e",
+    "app/db.py": "f15c32851a24ece261351654e61e354cec41550127df0ac881ef085e3171dc36",
+    "app/main.py": "cca60158b4fce73cc2715c4ef9ab0dbc9ff8dd269997da8171607adb0ba32cd0",
+    "app/redis_client.py": "99df7fdcdc5a91b435a4c5aa97633d207c1d6b0f58e15e5d255729c8409d3ce0",
+    "app/schemas.py": "7892382a4f1ebed44c7cc95e458276d344fbb70e82e52f9bde04d11e79ff1035",
+    "app/security.py": "6e5e95e6191be6d96a8a8b86eb99a563ce8af70c8bd24992519d56eee30ef7e3"
+  },
+  "started_at_utc": "2026-11-09T08:40:49.665183+00:00",
+  "finished_at_utc": "2026-11-09T08:40:53.434123+00:00",
+  "semgrep_version": "1.184.0",
+  "command": "semgrep scan --config p/python --config p/sql-injection --metrics=off --disable-version-check --json --output security/reports/semgrep-community.json app",
+  "exit_code": 0,
+  "rulesets": [
+    {
+      "registry": "p/python",
+      "source": "https://semgrep.dev/c/p/python",
+      "snapshot": "security/rules/community/p-python.yml",
+      "sha256": "de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5",
+      "rule_count": 151
+    },
+    {
+      "registry": "p/sql-injection",
+      "source": "https://semgrep.dev/c/p/sql-injection",
+      "snapshot": "security/rules/community/p-sql-injection.yml",
+      "sha256": "2d42cc98219dca2606c95401e1f5e909dbbd588bee2a3dabea245c7889f3c205",
+      "rule_count": 47
+    }
+  ],
+  "unique_rules_loaded": 185,
+  "python_rules_run": 151,
+  "scanned_files": 7,
+  "findings": 0,
+  "errors": 0,
+  "report_sha256": "4f07d3f697891316e7c35258bdef5b32f8e132f9678efb18f782f9fcc2ac2a00",
+  "snapshot_recheck": {
+    "exit_code": 0,
+    "findings": 0,
+    "errors": 0,
+    "scanned_files": 7
+  },
+  "documentation": "https://docs.semgrep.dev/running-rules"
+}
