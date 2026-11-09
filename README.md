@@ -14,7 +14,7 @@
 | [Реестр угроз](security/THREATS.md) | Основания оценки всех 18 сценариев |
 | [Карточка IDOR](security/IDOR.md) | Доступ к чужим объектам через подмену личности |
 | [Заключение по SQL-инъекции](security/SQL-INJECTION-REVIEW.md) | Результаты анализа SQL-вызовов и HTTP-проверки |
-| [Проверочный лист](security/SUBMISSION-CHECKLIST.md) | Соответствие требованиям и состояние заданий GitLab |
+| [Проверочный лист](security/SUBMISSION-CHECKLIST.md) | Результаты проверки по требованиям задания |
 | [HTTP-проверка](security/reports/http-behaviour.json) | 47 запросов к работающему приложению, попытки SQL-инъекции и подмена пользователя |
 | [Повторный Semgrep](security/reports/semgrep-http.json) | Анализ после исправления запуска |
 | [Проверка функций](security/reports/behaviour.json) | Подмена личности, одновременные переводы, отказ Redis и SQL-параметры |
@@ -49,4 +49,4 @@ docker compose --env-file .assessment.env -p riskfr-http \
 
 ## DefectDojo
 
-Подготовлены файлы загрузки и порядок обработки находок. Импорт в действующий экземпляр DefectDojo не выполнялся.
+Полный порядок обработки находок приведён в [разделе 6 отчёта](security/REPORT.md). Приложены результаты Semgrep и карточка IDOR в формате для загрузки.
