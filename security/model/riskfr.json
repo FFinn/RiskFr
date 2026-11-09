@@ -1,0 +1,1179 @@
+{
+  "version": "2.6.2",
+  "summary": {
+    "title": "RiskFr — переводы и история операций",
+    "owner": "Служба информационной безопасности (учебная модель)",
+    "description": "Оценка выданной версии 4903ad261d30bc2d1171e455f916e445a7963b4e от 09.11.2026. Исходное приложение не изменялось. Ошибки импортов препятствуют штатному запуску; проверена задуманная архитектура и отдельные функции на изолированной базе. Результаты проверки SQL-инъекции отрицательные. Модель включает предположения о неописанной внешней инфраструктуре.",
+    "id": 0
+  },
+  "detail": {
+    "contributors": [],
+    "reviewer": "Не назначен",
+    "diagramTop": 1,
+    "threatTop": 18,
+    "diagrams": [
+      {
+        "id": 0,
+        "title": "Переводы и история операций",
+        "description": "ГД-1 отделяет недоверенного клиента от приложения; ГД-2 и ГД-3 — полномочия доступа к PostgreSQL и Redis. Пунктиром показаны логические границы, а не подтверждённая сетевая сегментация. Публикация портов PostgreSQL и Redis в исходном файле развёртывания создаёт дополнительные пути доступа.",
+        "diagramType": "STRIDE",
+        "version": "2.6.2",
+        "cells": [
+          {
+            "id": "59d78098-6760-5f8a-b224-458de40b1d8d",
+            "shape": "trust-boundary-box",
+            "position": {
+              "x": 745,
+              "y": 415
+            },
+            "size": {
+              "width": 350,
+              "height": 270
+            },
+            "zIndex": -50,
+            "attrs": {
+              "body": {
+                "stroke": "#51637a",
+                "strokeWidth": 2,
+                "strokeDasharray": "8 5",
+                "fill": "transparent",
+                "fillOpacity": 0
+              },
+              "label": {
+                "text": "ГД-3: права Redis",
+                "fontSize": 13,
+                "refX": 15,
+                "refY": 15,
+                "textAnchor": "start"
+              }
+            },
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "ГД-3: права Redis",
+              "description": "Изменение субъекта доступа, полномочий и правил проверки данных. Граница не означает, что сеть уже сегментирована.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "id": "9ef2a94d-5cd9-5f7d-abe5-0a023a3c5df9",
+            "shape": "trust-boundary-box",
+            "position": {
+              "x": 745,
+              "y": 60
+            },
+            "size": {
+              "width": 350,
+              "height": 270
+            },
+            "zIndex": -50,
+            "attrs": {
+              "body": {
+                "stroke": "#51637a",
+                "strokeWidth": 2,
+                "strokeDasharray": "8 5",
+                "fill": "transparent",
+                "fillOpacity": 0
+              },
+              "label": {
+                "text": "ГД-2: права базы данных",
+                "fontSize": 13,
+                "refX": 15,
+                "refY": 15,
+                "textAnchor": "start"
+              }
+            },
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "ГД-2: права базы данных",
+              "description": "Изменение субъекта доступа, полномочий и правил проверки данных. Граница не означает, что сеть уже сегментирована.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "id": "0389d63c-e411-5b5a-983e-8bc55635e570",
+            "shape": "trust-boundary-box",
+            "position": {
+              "x": 315,
+              "y": 60
+            },
+            "size": {
+              "width": 340,
+              "height": 650
+            },
+            "zIndex": -50,
+            "attrs": {
+              "body": {
+                "stroke": "#51637a",
+                "strokeWidth": 2,
+                "strokeDasharray": "8 5",
+                "fill": "transparent",
+                "fillOpacity": 0
+              },
+              "label": {
+                "text": "ГД-1: сервер приложения",
+                "fontSize": 13,
+                "refX": 15,
+                "refY": 15,
+                "textAnchor": "start"
+              }
+            },
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "ГД-1: сервер приложения",
+              "description": "Изменение субъекта доступа, полномочий и правил проверки данных. Граница не означает, что сеть уже сегментирована.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "position": {
+              "x": 25,
+              "y": 280
+            },
+            "size": {
+              "width": 180,
+              "height": 100
+            },
+            "attrs": {
+              "text": {
+                "text": "Пользователь"
+              },
+              "body": {
+                "stroke": "#b4432f",
+                "strokeWidth": 2,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "actor",
+            "zIndex": 3,
+            "ports": {
+              "groups": {
+                "top": {
+                  "position": "top",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "right": {
+                  "position": "right",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "bottom": {
+                  "position": "bottom",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "left": {
+                  "position": "left",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                }
+              },
+              "items": []
+            },
+            "id": "becd34e3-0817-5e33-91c5-aba9fa60f19a",
+            "data": {
+              "name": "Пользователь",
+              "description": "Клиент банка или нарушитель с доступом к HTTP-интерфейсу. Устройство и переданные заголовки не считаются доверенными.",
+              "type": "tm.Actor",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [
+                {
+                  "id": "1fd7f1be-e67c-54d5-a076-3d01b395dbbd",
+                  "number": 1,
+                  "title": "У01. Подмена личности владельца счёта",
+                  "type": "Spoofing",
+                  "status": "Open",
+                  "severity": "Critical",
+                  "description": "Подмена X-User-Id позволяет представиться владельцем счёта. get_current_user_id лишь преобразует строку в число; подпись и сеанс не проверяются. Условие: исправлена связность импортов либо функция вызывается как задумано. Подтверждено вызовом функции, не внешней HTTP-атакой. app/security.py:3-13; behaviour.json/manual_idor. Вероятность: 3/3; ущерб: 3/3; оценка: 9/9.",
+                  "mitigation": "Код: проверять подписанный токен, срок и назначение, получать идентификатор только из проверенных утверждений. Архитектура: общий доверенный узел проверки личности, закрытый прямой доступ к API. Процесс: отрицательные проверки подмены личности при каждом изменении.",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "82b02d7e-5b3c-5f21-912e-078e717954e5",
+                  "number": 2,
+                  "title": "У02. Раскрытие истории на клиентском канале",
+                  "type": "Information disclosure",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "История содержит счета, суммы и время операций. HTTP без описанного TLS допускает чтение ответов наблюдателем сети. Внешнее завершение TLS возможно, но не представлено в поставке. docker-compose.yml:23-29; app/main.py:18-34. Вероятность: 2/3; ущерб: 3/3; оценка: 6/9.",
+                  "mitigation": "Инфраструктура: TLS на внешнем соединении и проверка сертификатов; код: не включать чувствительные данные в лишние ответы; процесс: проверять конфигурацию внешнего соединения перед выпуском.",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "26b1e447-2293-50c0-93d7-519ab3e184da",
+                  "number": 3,
+                  "title": "У03. Оспаривание денежного перевода",
+                  "type": "Repudiation",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Клиент может отрицать операцию: запись transactions хранит счета и сумму, но не подтверждённого субъекта, уникальный идентификатор запроса и результат проверки доступа. Обычная строка перевода не заменяет защищённый журнал действий. app/db.py:23-29. Вероятность: 2/3; ущерб: 3/3; оценка: 6/9.",
+                  "mitigation": "Код: фиксировать подтверждённого субъекта, время и идентификатор запроса. Инфраструктура: защищённый отдельный журнал с ограничением изменений. Процесс: установить срок хранения и порядок расследования.",
+                  "modelType": "STRIDE"
+                }
+              ],
+              "hasOpenThreats": true
+            }
+          },
+          {
+            "position": {
+              "x": 385,
+              "y": 245
+            },
+            "size": {
+              "width": 190,
+              "height": 170
+            },
+            "attrs": {
+              "text": {
+                "text": "API переводов"
+              },
+              "body": {
+                "stroke": "#b4432f",
+                "strokeWidth": 2,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "zIndex": 3,
+            "ports": {
+              "groups": {
+                "top": {
+                  "position": "top",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "right": {
+                  "position": "right",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "bottom": {
+                  "position": "bottom",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "left": {
+                  "position": "left",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                }
+              },
+              "items": []
+            },
+            "id": "b7e4e48f-3763-5c96-a1a1-6d598e3f6bd1",
+            "data": {
+              "name": "API переводов",
+              "description": "FastAPI: POST /transfer, GET /transactions. В app/main.py имеются ошибки импорта; показана задуманная структура. Проверки выполнены прямыми вызовами неизменённых функций.",
+              "type": "tm.Process",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [
+                {
+                  "id": "47eba714-0368-58ab-8e38-976d9bfd4425",
+                  "number": 4,
+                  "title": "У04. Чтение чужой истории через подмену идентификатора",
+                  "type": "Information disclosure",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Ручная находка IDOR: подстановка идентификатора жертвы ведёт к выборке её исходящих операций. Условие a.owner_user_id=$1 существует, но значение $1 получено из неподтверждённой личности. Это следствие У01, а не отсутствие фильтра владельца. app/crud.py:43-66; app/security.py:11; behaviour.json/manual_idor. Вероятность: 3/3; ущерб: 3/3; оценка: 9/9.",
+                  "mitigation": "Код: объектная авторизация по проверенному субъекту; не принимать идентификатор владельца как доказательство полномочий. Процесс: проверки запрета чтения чужих данных при неизменном сеансе. Не считать случайный идентификатор заменой авторизации.",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "f01184c3-818e-5d81-8089-83d929327777",
+                  "number": 5,
+                  "title": "У05. Перевод средств от имени другого клиента",
+                  "type": "Elevation of privilege",
+                  "status": "Open",
+                  "severity": "Critical",
+                  "description": "_must_own_account проверяет владельца, однако переданный user_id можно подменить. Чужой счёт становится доступен для списания с правами владельца. Это вторая ветвь У01, ущерб не следует суммировать как независимые риски. app/crud.py:5-16; behaviour.json/manual_idor. Вероятность: 3/3; ущерб: 3/3; оценка: 9/9.",
+                  "mitigation": "Код: связывать владельца счёта с проверенным сеансом и проверять разрешение каждой операции. Архитектура: отделить проверку личности от принятия денежного распоряжения; для рискованных операций предусмотреть дополнительное подтверждение.",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "ce0f3a56-179a-58ae-b223-5de4f0b51cb6",
+                  "number": 6,
+                  "title": "У06. Одновременное списание сверх остатка",
+                  "type": "Tampering",
+                  "status": "Open",
+                  "severity": "Critical",
+                  "description": "Два перевода читают один остаток до обновления и оба проходят проверку. Обновление не содержит условия достаточности средств; блокировки SELECT FOR UPDATE и ограничения balance_cents>=0 нет. Получено -300000 копеек после двух переводов по 400000 с остатка 500000. app/crud.py:22-33; app/db.py:19; behaviour.json/concurrent_transfers. Вероятность: 3/3; ущерб: 3/3; оценка: 9/9.",
+                  "mitigation": "Код: атомарное условное списание с проверкой числа строк или блокировка счетов в фиксированном порядке в одной транзакции; корректно обрабатывать конфликт. База: ограничение неотрицательного остатка при запрете овердрафта. Процесс: параллельные проверки сохранения денежных инвариантов.",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "ed88933e-65cb-516c-a061-5bb824d956d1",
+                  "number": 7,
+                  "title": "У07. Повторное списание после ошибки Redis",
+                  "type": "Tampering",
+                  "status": "Open",
+                  "severity": "Critical",
+                  "description": "Перевод уже зафиксирован в PostgreSQL, когда выполняется DEL Redis. Ошибка Redis выдаёт исключение после фиксации; повтор запроса создаёт второй перевод, поскольку ключа защиты от повторного исполнения нет. Подтверждено двумя записями вместо одной. app/crud.py:20-41; behaviour.json/retry_after_redis_failure. Вероятность: 3/3; ущерб: 3/3; оценка: 9/9.",
+                  "mitigation": "Код: ключ однократного исполнения, связанный с субъектом и содержимым запроса, с уникальным ограничением и сохранением результата в той же транзакции. Архитектура: очередь отложенных действий в базе для обновления кеша; ошибка кеша не должна делать результат перевода неоднозначным. Процесс: проверки повторов и отказов зависимостей.",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "d492f5e0-8225-5075-b01d-4777309abefc",
+                  "number": 8,
+                  "title": "У08. Истощение ресурсов запросами истории",
+                  "type": "Denial of service",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "description": "Параметры limit и search ограничены, но частота запросов не ограничена; преобразование id в текст и ILIKE могут приводить к просмотру множества строк. Пул базы ограничен пятью соединениями. Степень влияния требует нагрузочной проверки. app/main.py:21-22; app/crud.py:61; app/db.py:9. Вероятность: 2/3; ущерб: 2/3; оценка: 4/9.",
+                  "mitigation": "Инфраструктура: ограничения частоты и числа одновременных запросов. Код: подходящие индексы, постраничная выдача и сроки исполнения. Процесс: проверить предельную нагрузку на объёме данных, близком к рабочему.",
+                  "modelType": "STRIDE"
+                }
+              ],
+              "hasOpenThreats": true
+            }
+          },
+          {
+            "position": {
+              "x": 820,
+              "y": 140
+            },
+            "size": {
+              "width": 200,
+              "height": 100
+            },
+            "attrs": {
+              "text": {
+                "text": "PostgreSQL"
+              },
+              "topLine": {
+                "stroke": "#b4432f",
+                "strokeWidth": 2,
+                "strokeDasharray": null
+              },
+              "bottomLine": {
+                "stroke": "#b4432f",
+                "strokeWidth": 2,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "zIndex": 3,
+            "ports": {
+              "groups": {
+                "top": {
+                  "position": "top",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "right": {
+                  "position": "right",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "bottom": {
+                  "position": "bottom",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "left": {
+                  "position": "left",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                }
+              },
+              "items": []
+            },
+            "id": "70439b02-3974-5031-8539-92829d47df0d",
+            "data": {
+              "name": "PostgreSQL",
+              "description": "Счета, владельцы, остатки в копейках и операции. Публикация 5432 и известные реквизиты указаны в docker-compose.yml. Доступность из Интернета зависит от внешних сетевых правил.",
+              "type": "tm.Store",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [
+                {
+                  "id": "b2521855-4392-5a32-8d9b-38c4721a4538",
+                  "number": 9,
+                  "title": "У09. Чтение данных через опубликованный порт",
+                  "type": "Information disclosure",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Файл развёртывания публикует 5432 на всех интерфейсах и содержит известные реквизиты postgres/postgres. При отсутствии внешнего сетевого ограничения возможно прямое чтение банковских данных. Публикация порта подтверждена; доступ из Интернета не проверялся. docker-compose.yml:7-11. Вероятность: 2/3; ущерб: 3/3; оценка: 6/9.",
+                  "mitigation": "Инфраструктура: исключить внешнюю публикацию базы и разрешить доступ только серверу приложения; заменить реквизиты и хранить их вне репозитория. Процесс: проверять открытые порты при выпуске.",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "8d3ca613-5948-587a-a090-b706488da946",
+                  "number": 10,
+                  "title": "У10. Изменение денежных данных привилегированной ролью",
+                  "type": "Tampering",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Приложение использует роль postgres с широкими правами, указанную в строке подключения. Компрометация процесса приложения может дать возможность произвольно менять остатки и историю. docker-compose.yml:7-8,23; app/db.py:15-29. Вероятность: 2/3; ущерб: 3/3; оценка: 6/9.",
+                  "mitigation": "База: отдельная роль с минимальными разрешениями; выполнение изменений схемы отдельной ролью. Инфраструктура: изоляция сетевого доступа и секретов. Процесс: контроль привилегий и независимая сверка денежных операций.",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "60e33ccc-9528-5b0d-97ab-50ac93059e63",
+                  "number": 11,
+                  "title": "У11. Утрата базы или непригодный резервный экземпляр",
+                  "type": "Denial of service",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "В поставке есть том pgdata, но нет описания резервного копирования и проверок восстановления. Том не является резервной копией. Повреждение или удаление данных может остановить переводы и историю; отсутствие внешних копий не утверждается. docker-compose.yml:12-13,33-34. Вероятность: 2/3; ущерб: 3/3; оценка: 6/9.",
+                  "mitigation": "Инфраструктура: изолированные резервные копии и восстановление на момент времени. Процесс: согласовать допустимые потери данных и время восстановления, регулярно выполнять учебное восстановление и проверять целостность.",
+                  "modelType": "STRIDE"
+                }
+              ],
+              "hasOpenThreats": true
+            }
+          },
+          {
+            "position": {
+              "x": 820,
+              "y": 500
+            },
+            "size": {
+              "width": 200,
+              "height": 100
+            },
+            "attrs": {
+              "text": {
+                "text": "Redis"
+              },
+              "topLine": {
+                "stroke": "#b4432f",
+                "strokeWidth": 2,
+                "strokeDasharray": null
+              },
+              "bottomLine": {
+                "stroke": "#b4432f",
+                "strokeWidth": 2,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "zIndex": 3,
+            "ports": {
+              "groups": {
+                "top": {
+                  "position": "top",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "right": {
+                  "position": "right",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "bottom": {
+                  "position": "bottom",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                },
+                "left": {
+                  "position": "left",
+                  "attrs": {
+                    "circle": {
+                      "r": 4,
+                      "magnet": true,
+                      "stroke": "#5F95FF",
+                      "strokeWidth": 1,
+                      "fill": "#fff",
+                      "style": {
+                        "visibility": "hidden"
+                      }
+                    }
+                  }
+                }
+              },
+              "items": []
+            },
+            "id": "446c4c99-d9af-55fd-b21a-8356ebef09e7",
+            "data": {
+              "name": "Redis",
+              "description": "Чтение ключей tx:{user_id}:{limit}:{search}, удаление tx:{user_id}. Запись результатов в кеш отсутствует. Получение непустого значения возвращает пустую историю.",
+              "type": "tm.Store",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [
+                {
+                  "id": "a26741cf-ca92-5833-a339-f6f86801f741",
+                  "number": 12,
+                  "title": "У12. Подмена признака наличия истории",
+                  "type": "Tampering",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "description": "При непустом значении ключа tx:{user_id}:{limit}:{search} функция возвращает [], игнорируя историю базы. Внедрённый извне ключ скрывает операции. Redis опубликован без указанной проверки доступа; само приложение ключи не записывает. app/crud.py:45-48; docker-compose.yml:15-18; behaviour.json/redis_history_suppression. Вероятность: 2/3; ущерб: 2/3; оценка: 4/9.",
+                  "mitigation": "Инфраструктура: закрытая сеть, списки разрешённых команд и проверка доступа Redis. Код: проверять формат кешированных данных и возвращать действительные операции либо обращаться к базе. Процесс: отрицательные проверки повреждённого кеша.",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "b03de406-d604-52f2-a2e7-9cf9f44e3c8f",
+                  "number": 13,
+                  "title": "У13. Отказ истории при недоступности кеша",
+                  "type": "Denial of service",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "GET Redis выполняется до обращения к базе без обработки отказа. Недоступность Redis может остановить чтение истории даже при исправной PostgreSQL. app/crud.py:44-50. Вероятность: 2/3; ущерб: 2/3; оценка: 4/9.",
+                  "mitigation": "Код: ограничить время ожидания и предусмотреть обращение к базе при отказе кеша. Инфраструктура: ограничить ресурсы Redis и обеспечить наблюдение за отказами. Процесс: проверки отключения зависимости.",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "450d3e05-0301-505b-a4a0-202feebe32b9",
+                  "number": 14,
+                  "title": "У14. Раскрытие идентификаторов и параметров поиска",
+                  "type": "Information disclosure",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "description": "Формат ключа содержит user_id, limit и поисковую строку. Если ключи создаёт другой компонент, прямой доступ к Redis раскрывает эти сведения. Запись ключей данным приложением не обнаружена; сценарий условный. app/crud.py:45; docker-compose.yml:15-18. Вероятность: 2/3; ущерб: 2/3; оценка: 4/9.",
+                  "mitigation": "Инфраструктура: ограничить доступ и сетевой обмен. Код: минимизировать чувствительные данные в ключах. Процесс: определить владельца записи, срок хранения и допустимый состав кеша.",
+                  "modelType": "STRIDE"
+                }
+              ],
+              "hasOpenThreats": true
+            }
+          },
+          {
+            "id": "0cf03692-b785-5a85-ad70-78bff2dbb84f",
+            "shape": "flow",
+            "zIndex": 2,
+            "attrs": {
+              "line": {
+                "stroke": "#334155",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "strokeWidth": 1.5
+              }
+            },
+            "source": {
+              "cell": "becd34e3-0817-5e33-91c5-aba9fa60f19a"
+            },
+            "target": {
+              "cell": "b7e4e48f-3763-5c96-a1a1-6d598e3f6bd1"
+            },
+            "connector": "normal",
+            "vertices": [
+              {
+                "x": 250,
+                "y": 260
+              }
+            ],
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "П1: запрос перевода / истории",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": 0.5
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "П1: запрос перевода / истории",
+              "description": "HTTP: X-User-Id; from_account_id, to_account_id, amount_cents; limit, search. Пересекает ГД-1. TLS и внешняя проверка личности в исходной поставке не описаны.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "id": "8aac3553-f303-58ad-9af3-e841f505166e",
+                  "number": 15,
+                  "title": "У15. Изменение денежного распоряжения в пути",
+                  "type": "Tampering",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Если внешнее соединение остаётся HTTP, посредник может менять счета, сумму или заголовок пользователя. В репозитории нет описанного завершения TLS. Это условие архитектуры, а не доказательство атаки на работающий сервер. docker-compose.yml:25-26. Вероятность: 2/3; ущерб: 3/3; оценка: 6/9.",
+                  "mitigation": "Инфраструктура: TLS и запрет незашифрованных денежных запросов. Код: связывать подтверждение операции с конкретными счётом получателя и суммой. Процесс: проверять отсутствие обходного незашифрованного пути.",
+                  "modelType": "STRIDE"
+                }
+              ],
+              "hasOpenThreats": true,
+              "isEncrypted": false,
+              "isPublicNetwork": true,
+              "protocol": "HTTP",
+              "isBidirectional": false
+            },
+            "width": 200,
+            "height": 100
+          },
+          {
+            "id": "d3f0b1c7-cb59-5581-84d0-c0b84d1507c5",
+            "shape": "flow",
+            "zIndex": 2,
+            "attrs": {
+              "line": {
+                "stroke": "#334155",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "strokeWidth": 1.5
+              }
+            },
+            "source": {
+              "cell": "b7e4e48f-3763-5c96-a1a1-6d598e3f6bd1"
+            },
+            "target": {
+              "cell": "becd34e3-0817-5e33-91c5-aba9fa60f19a"
+            },
+            "connector": "normal",
+            "vertices": [
+              {
+                "x": 250,
+                "y": 450
+              }
+            ],
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "П2: результат / история",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": 0.5
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "П2: результат / история",
+              "description": "Идентификатор перевода, статусы ошибок и история операций. Пересекает ГД-1.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "threats": [],
+              "hasOpenThreats": false,
+              "isEncrypted": false,
+              "isPublicNetwork": true,
+              "protocol": "HTTP",
+              "isBidirectional": false
+            },
+            "width": 200,
+            "height": 100
+          },
+          {
+            "id": "4eb1a730-a4d4-54cd-b12a-a6adc0811203",
+            "shape": "flow",
+            "zIndex": 2,
+            "attrs": {
+              "line": {
+                "stroke": "#334155",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "strokeWidth": 1.5
+              }
+            },
+            "source": {
+              "cell": "b7e4e48f-3763-5c96-a1a1-6d598e3f6bd1"
+            },
+            "target": {
+              "cell": "70439b02-3974-5031-8539-92829d47df0d"
+            },
+            "connector": "normal",
+            "vertices": [
+              {
+                "x": 655,
+                "y": 175
+              }
+            ],
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "П3: запросы к счетам",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": 0.5
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "П3: запросы к счетам",
+              "description": "Параметризованные SELECT, UPDATE, INSERT; одна транзакция для изменения остатков и записи перевода. Пересекает ГД-1 и ГД-2.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "id": "90742b76-2f1f-5118-85ce-5196291aa25d",
+                  "number": 16,
+                  "title": "У16. SQL-инъекция при попадании ввода в текст запроса",
+                  "type": "Tampering",
+                  "status": "Mitigated",
+                  "severity": "High",
+                  "description": "Контрольный сценарий, НЕ подтверждённая уязвимость этой версии. В f-строки вставляется локальный счётчик i, а search, limit и user_id передаются отдельными аргументами asyncpg. Два предупреждения Semgrep разобраны как ложные срабатывания в части SQL-инъекции. app/crud.py:58-66; behaviour.json/sql_injection. Вероятность: 1/3; ущерб: 3/3; оценка: 3/9.",
+                  "mitigation": "Существующая мера: параметры $1…$n. Сохранить её при изменениях. Процесс: проверки опасного SQL и параметризованного варианта, ручной разбор динамических запросов. Статус означает, что данный сценарий снижен имеющейся мерой, а не что в этой работе исправлялся код.",
+                  "modelType": "STRIDE"
+                }
+              ],
+              "hasOpenThreats": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL/TCP",
+              "isBidirectional": false
+            },
+            "width": 200,
+            "height": 100
+          },
+          {
+            "id": "09119951-34af-52b1-a9d4-e54ccb9be57e",
+            "shape": "flow",
+            "zIndex": 2,
+            "attrs": {
+              "line": {
+                "stroke": "#334155",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "strokeWidth": 1.5
+              }
+            },
+            "source": {
+              "cell": "70439b02-3974-5031-8539-92829d47df0d"
+            },
+            "target": {
+              "cell": "b7e4e48f-3763-5c96-a1a1-6d598e3f6bd1"
+            },
+            "connector": "normal",
+            "vertices": [
+              {
+                "x": 680,
+                "y": 310
+              }
+            ],
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "П4: остатки и операции",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": 0.5
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "П4: остатки и операции",
+              "description": "Ответы базы: признак владельца, остатки, строки истории. Пересекает ГД-2 и ГД-1.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "id": "da449f7e-fd03-5294-9aeb-c25f54ca5648",
+                  "number": 17,
+                  "title": "У17. Перехват соединения с базой",
+                  "type": "Information disclosure",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Настройки не требуют проверки TLS PostgreSQL. При доступе нарушителя к внутреннему сетевому пути возможен перехват чувствительных данных; состояние защиты внешней инфраструктуры неизвестно. app/db.py:9; docker-compose.yml:23. Вероятность: 2/3; ущерб: 3/3; оценка: 6/9.",
+                  "mitigation": "Инфраструктура: изолировать сеть, настроить проверку сертификата сервера базы, ограничить сетевые разрешения. Процесс: проверить эффективные параметры соединения в целевой среде.",
+                  "modelType": "STRIDE"
+                }
+              ],
+              "hasOpenThreats": true,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "isBidirectional": false
+            },
+            "width": 200,
+            "height": 100
+          },
+          {
+            "id": "5aba8856-de2f-567b-84af-94d87aff508f",
+            "shape": "flow",
+            "zIndex": 2,
+            "attrs": {
+              "line": {
+                "stroke": "#334155",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "strokeWidth": 1.5
+              }
+            },
+            "source": {
+              "cell": "b7e4e48f-3763-5c96-a1a1-6d598e3f6bd1"
+            },
+            "target": {
+              "cell": "446c4c99-d9af-55fd-b21a-8356ebef09e7"
+            },
+            "connector": "normal",
+            "vertices": [
+              {
+                "x": 660,
+                "y": 475
+              }
+            ],
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "П5: чтение / удаление ключа",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": 0.5
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "П5: чтение / удаление ключа",
+              "description": "GET tx:{user_id}:{limit}:{search}, DEL tx:{user_id}. SET в приложении отсутствует. Пересекает ГД-1 и ГД-3.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "id": "29588bfc-f208-549b-a35d-711d2169e28a",
+                  "number": 18,
+                  "title": "У18. Несогласованное удаление записей кеша",
+                  "type": "Tampering",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "description": "История читается по составному ключу tx:user:limit:search, а перевод удаляет только tx:user. Созданный ранее составной ключ сохраняется после перевода. Для текущего кода это воспроизведено с отдельно созданным ключом; штатная запись кеша отсутствует. app/crud.py:40,45; behaviour.json/redis_invalidation. Вероятность: 2/3; ущерб: 2/3; оценка: 4/9.",
+                  "mitigation": "Код: определить единый формат ключей и версию истории, учитывать оба счёта перевода. Архитектура: обновлять кеш после зафиксированной операции надёжным отложенным действием. Процесс: согласовать контракт чтения и записи между компонентами.",
+                  "modelType": "STRIDE"
+                }
+              ],
+              "hasOpenThreats": true,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "RESP/TCP",
+              "isBidirectional": false
+            },
+            "width": 200,
+            "height": 100
+          },
+          {
+            "id": "ec2a4e85-0e6d-5919-b3c2-6dce83d41aff",
+            "shape": "flow",
+            "zIndex": 2,
+            "attrs": {
+              "line": {
+                "stroke": "#334155",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "strokeWidth": 1.5
+              }
+            },
+            "source": {
+              "cell": "446c4c99-d9af-55fd-b21a-8356ebef09e7"
+            },
+            "target": {
+              "cell": "b7e4e48f-3763-5c96-a1a1-6d598e3f6bd1"
+            },
+            "connector": "normal",
+            "vertices": [
+              {
+                "x": 665,
+                "y": 650
+              }
+            ],
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "П6: значение / результат удаления",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": 0.5
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "П6: значение / результат удаления",
+              "description": "Значение ключа, подтверждение удаления или ошибка соединения. Пересекает ГД-3 и ГД-1.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "threats": [],
+              "hasOpenThreats": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "isBidirectional": false
+            },
+            "width": 200,
+            "height": 100
+          }
+        ],
+        "thumbnail": ""
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+rules:
+  - id: sql-input-in-query
+    languages: [python]
+    severity: ERROR
+    message: Входное значение попадает в текст SQL-запроса. Требуется проверка возможности SQL-инъекции.
+    mode: taint
+    pattern-sources:
+      - patterns:
+          - pattern-inside: |
+              async def list_transactions($USER, $LIMIT, $SEARCH):
+                ...
+          - focus-metavariable: $SEARCH
+    pattern-sinks:
+      - patterns:
+          - pattern-either:
+              - pattern: $CONN.fetch($SQL, ...)
+              - pattern: $CONN.fetchval($SQL, ...)
+              - pattern: $CONN.execute($SQL, ...)
+          - focus-metavariable: $SQL
+    metadata:
+      cwe: ['CWE-89: SQL Injection']
+      confidence: HIGH
+      category: security
+      technology: [python, asyncpg]
+  - id: sql-dynamic-text-review
+    languages: [python]
+    severity: WARNING
+    message: Динамическое формирование SQL. Это признак для ручной проверки, а не доказательство SQL-инъекции; проверьте происхождение вставляемых значений и параметры запроса.
+    patterns:
+      - pattern: $SQL += f"..."
+      - metavariable-regex:
+          metavariable: $SQL
+          regex: ^sql$
+    metadata:
+      cwe: ['CWE-89: SQL Injection']
+      confidence: LOW
+      category: security
+      technology: [python, asyncpg]
+  - id: untrusted-user-identity
+    languages: [python]
+    severity: ERROR
+    message: Идентификатор пользователя принимается из неподписанного заголовка. Преобразование в число не подтверждает личность и позволяет обратиться к чужим счетам.
+    patterns:
+      - pattern-inside: |
+          async def $FUNC($HEADER: str | None = Header(default=None)) -> int:
+            ...
+      - pattern: return int($HEADER)
+    metadata:
+      cwe: ['CWE-287: Improper Authentication']
+      confidence: HIGH
+      category: security
+      technology: [python, fastapi]

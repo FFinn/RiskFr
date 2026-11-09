@@ -1,0 +1,28 @@
+{
+  "assessment_date": "2026-11-09",
+  "source_repository": "https://devsecops.gitlab.yandexcloud.net/devsecops-projects/unit-9-final-practice",
+  "source_commit": "4903ad261d30bc2d1171e455f916e445a7963b4e",
+  "source_files_sha256": {
+    "app/config.py": "d15a27e72366ca812fcb297e3a334a5bc57aca7bd5493a7855087b4b28ee2149",
+    "app/crud.py": "e6433a8d7dfc06f07d063451cab0ecf8eeb2c4e3cad7344f74d5d9ec0da10c3e",
+    "app/db.py": "f15c32851a24ece261351654e61e354cec41550127df0ac881ef085e3171dc36",
+    "app/main.py": "cca60158b4fce73cc2715c4ef9ab0dbc9ff8dd269997da8171607adb0ba32cd0",
+    "app/redis_client.py": "99df7fdcdc5a91b435a4c5aa97633d207c1d6b0f58e15e5d255729c8409d3ce0",
+    "app/schemas.py": "7892382a4f1ebed44c7cc95e458276d344fbb70e82e52f9bde04d11e79ff1035",
+    "app/security.py": "6e5e95e6191be6d96a8a8b86eb99a563ce8af70c8bd24992519d56eee30ef7e3",
+    "requirements.txt": "a528b37a7b5991c4dbf8f69316be9d62cd5d8a2322987e447c7622f8c14c1c91",
+    "docker-compose.yml": "fc6e4c3608556dd507df3cdd19e2def35e2e6b5a31b3116dd32e646e37ac3eaf"
+  },
+  "semgrep_version": "1.184.0",
+  "semgrep_scope": "app (7 файлов)",
+  "semgrep_command": "semgrep scan --config security/rules/bank.yml --metrics=off --disable-version-check --json --output security/reports/semgrep.json app",
+  "rules_sha256": "33177a1742d7c991bafedcb85ab767ccf5ed67fc47c6dbf56a7dab62de0b090b",
+  "threat_dragon_version": "2.6.2",
+  "pdf_origin": "Сформированная страница отчёта Threat Dragon: импортирована модель riskfr.json, проверены 18 угроз и 6 стрелок, выгружены сведения и SVG. Подписи переведены на русский язык; табличные строки представлены карточками.",
+  "runtime_checks": "Прямые вызовы исходных функций в отдельной внутренней сети Docker; HTTP-сервер не запускался.",
+  "images": {
+    "postgres:16": "sha256:f9a7b9ebf6f56201f949db745e47bc423c0f0f8294bafe991cc10bf74b029657",
+    "redis:7": "sha256:2e3eb11462c4e3759e6972678dd051d150ff54b1e60714b3c33b701260172a90",
+    "python:3.12-slim": "sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b"
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "scope": "Отдельная учебная база; прямые вызовы функций, не HTTP-проверка",
+  "source_sha256": {
+    "app/._config.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
+    "app/._crud.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
+    "app/._db.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
+    "app/._main.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
+    "app/._redis_client.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
+    "app/._schemas.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
+    "app/._security.py": "8ec4709cde1bab67ff456939ad2ebd49137dc1446dc63deee1a713d4e897e2b0",
+    "app/config.py": "d15a27e72366ca812fcb297e3a334a5bc57aca7bd5493a7855087b4b28ee2149",
+    "app/crud.py": "e6433a8d7dfc06f07d063451cab0ecf8eeb2c4e3cad7344f74d5d9ec0da10c3e",
+    "app/db.py": "f15c32851a24ece261351654e61e354cec41550127df0ac881ef085e3171dc36",
+    "app/main.py": "cca60158b4fce73cc2715c4ef9ab0dbc9ff8dd269997da8171607adb0ba32cd0",
+    "app/redis_client.py": "99df7fdcdc5a91b435a4c5aa97633d207c1d6b0f58e15e5d255729c8409d3ce0",
+    "app/schemas.py": "7892382a4f1ebed44c7cc95e458276d344fbb70e82e52f9bde04d11e79ff1035",
+    "app/security.py": "6e5e95e6191be6d96a8a8b86eb99a563ce8af70c8bd24992519d56eee30ef7e3"
+  },
+  "application_import": {
+    "status": "ошибка",
+    "reason": "cannot import name 'user_id' from 'app.security' (/assessment/app/security.py)"
+  },
+  "ownership_check": {
+    "status_code": 403,
+    "expected": 403
+  },
+  "manual_idor": {
+    "claimed_identity": 1,
+    "created_transaction": 1,
+    "rows_for_user_2": 0,
+    "rows_after_claiming_user_1": 1,
+    "conclusion": "Проверка владельца есть, но её результат зависит от неподтверждённого заголовка"
+  },
+  "sql_injection": {
+    "cases": [
+      {
+        "search": "' OR 1=1 --",
+        "returned_rows": 0,
+        "sql": {
+          "sql": "SELECT t.id, t.from_account_id, t.to_account_id, t.amount_cents, t.created_at\n        FROM transactions t\n        JOIN accounts a ON a.id = t.from_account_id\n        WHERE a.owner_user_id = $1\n         AND CAST(t.id AS TEXT) ILIKE $2 ORDER BY t.created_at DESC LIMIT $3",
+          "parameters": [
+            2,
+            "%' OR 1=1 --%",
+            100
+          ]
+        }
+      },
+      {
+        "search": "%'; DROP TABLE accounts; --",
+        "returned_rows": 0,
+        "sql": {
+          "sql": "SELECT t.id, t.from_account_id, t.to_account_id, t.amount_cents, t.created_at\n        FROM transactions t\n        JOIN accounts a ON a.id = t.from_account_id\n        WHERE a.owner_user_id = $1\n         AND CAST(t.id AS TEXT) ILIKE $2 ORDER BY t.created_at DESC LIMIT $3",
+          "parameters": [
+            2,
+            "%%'; DROP TABLE accounts; --%",
+            100
+          ]
+        }
+      },
+      {
+        "search": "1' UNION SELECT 1,2,3,4,now() --",
+        "returned_rows": 0,
+        "sql": {
+          "sql": "SELECT t.id, t.from_account_id, t.to_account_id, t.amount_cents, t.created_at\n        FROM transactions t\n        JOIN accounts a ON a.id = t.from_account_id\n        WHERE a.owner_user_id = $1\n         AND CAST(t.id AS TEXT) ILIKE $2 ORDER BY t.created_at DESC LIMIT $3",
+          "parameters": [
+            2,
+            "%1' UNION SELECT 1,2,3,4,now() --%",
+            100
+          ]
+        }
+      },
+      {
+        "search": "' AND pg_sleep(2) IS NULL --",
+        "returned_rows": 0,
+        "sql": {
+          "sql": "SELECT t.id, t.from_account_id, t.to_account_id, t.amount_cents, t.created_at\n        FROM transactions t\n        JOIN accounts a ON a.id = t.from_account_id\n        WHERE a.owner_user_id = $1\n         AND CAST(t.id AS TEXT) ILIKE $2 ORDER BY t.created_at DESC LIMIT $3",
+          "parameters": [
+            2,
+            "%' AND pg_sleep(2) IS NULL --%",
+            100
+          ]
+        }
+      },
+      {
+        "search": "%",
+        "returned_rows": 0,
+        "sql": {
+          "sql": "SELECT t.id, t.from_account_id, t.to_account_id, t.amount_cents, t.created_at\n        FROM transactions t\n        JOIN accounts a ON a.id = t.from_account_id\n        WHERE a.owner_user_id = $1\n         AND CAST(t.id AS TEXT) ILIKE $2 ORDER BY t.created_at DESC LIMIT $3",
+          "parameters": [
+            2,
+            "%%%",
+            100
+          ]
+        }
+      },
+      {
+        "search": "_",
+        "returned_rows": 0,
+        "sql": {
+          "sql": "SELECT t.id, t.from_account_id, t.to_account_id, t.amount_cents, t.created_at\n        FROM transactions t\n        JOIN accounts a ON a.id = t.from_account_id\n        WHERE a.owner_user_id = $1\n         AND CAST(t.id AS TEXT) ILIKE $2 ORDER BY t.created_at DESC LIMIT $3",
+          "parameters": [
+            2,
+            "%_%",
+            100
+          ]
+        }
+      }
+    ],
+    "invalid_identity_header_status": 400,
+    "remaining_accounts": 2,
+    "conclusion": "SQL-инъекция указанными строками не подтверждена; значения передаются отдельно от текста SQL"
+  },
+  "redis_history_suppression": {
+    "rows_before": 1,
+    "rows_after": 0
+  },
+  "redis_invalidation": {
+    "history_key_remaining": true
+  },
+  "concurrent_transfers": {
+    "starting_balance": 500000,
+    "each_amount": 400000,
+    "transaction_ids": [
+      1,
+      2
+    ],
+    "final_balance": -300000,
+    "method": "Два чтения остатка синхронизированы перед обновлением; запросы и транзакции приложения не изменены"
+  },
+  "retry_after_redis_failure": {
+    "retry_transaction_id": 2,
+    "committed_transfers": 2,
+    "final_balance": 499800
+  }
+}
