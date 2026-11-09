@@ -18,11 +18,37 @@
   "semgrep_command": "semgrep scan --config security/rules/bank.yml --metrics=off --disable-version-check --json --output security/reports/semgrep.json app",
   "rules_sha256": "33177a1742d7c991bafedcb85ab767ccf5ed67fc47c6dbf56a7dab62de0b090b",
   "threat_dragon_version": "2.6.2",
-  "pdf_origin": "Сформированная страница отчёта Threat Dragon: импортирована модель riskfr.json, проверены 18 угроз и 6 стрелок, выгружены сведения и SVG. Подписи переведены на русский язык; табличные строки представлены карточками.",
-  "runtime_checks": "Прямые вызовы исходных функций в отдельной внутренней сети Docker; HTTP-сервер не запускался.",
+  "pdf_origin": "Отчёт модели OWASP Threat Dragon 2.6.2.",
+  "runtime_checks": "Исходная версия: вызовы функций на отдельной базе (behaviour.json). После исправления запуска: HTTP-проверка (http-behaviour.json).",
   "images": {
     "postgres:16": "sha256:f9a7b9ebf6f56201f949db745e47bc423c0f0f8294bafe991cc10bf74b029657",
     "redis:7": "sha256:2e3eb11462c4e3759e6972678dd051d150ff54b1e60714b3c33b701260172a90",
     "python:3.12-slim": "sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b"
+  },
+  "http_checks": {
+    "checked_at_utc": "2026-11-09T06:03:49.014165+00:00",
+    "passed_requests": 47,
+    "source_files_sha256": {
+      "app/config.py": "d15a27e72366ca812fcb297e3a334a5bc57aca7bd5493a7855087b4b28ee2149",
+      "app/crud.py": "e6433a8d7dfc06f07d063451cab0ecf8eeb2c4e3cad7344f74d5d9ec0da10c3e",
+      "app/db.py": "f15c32851a24ece261351654e61e354cec41550127df0ac881ef085e3171dc36",
+      "app/main.py": "c483a1e9b93cf22eba5c32bbbc9a774f247cde2336222b38486eb8f0c5c04d53",
+      "app/redis_client.py": "99df7fdcdc5a91b435a4c5aa97633d207c1d6b0f58e15e5d255729c8409d3ce0",
+      "app/schemas.py": "7892382a4f1ebed44c7cc95e458276d344fbb70e82e52f9bde04d11e79ff1035",
+      "app/security.py": "6e5e95e6191be6d96a8a8b86eb99a563ce8af70c8bd24992519d56eee30ef7e3"
+    },
+    "changes": [
+      "app/main.py: исправлены имена импортируемых функций и моделей",
+      "Dockerfile: добавлена сборка приложения",
+      "compose.check.yml: отдельное окружение проверки"
+    ],
+    "files_sha256": {
+      "Dockerfile": "af63c7e98a314da3d10c960849e4eb2a1046d4a8b302f066b4750637cd8feffe",
+      "compose.check.yml": "49ef9cd61a250d67b1d8828bfdedabf3e75973fa4a60eb3122785116547eeeaf",
+      "security/checks/verify_http.py": "59c82b180197a726a7d2169a5fe06e58fdd9eced51fa07d9479e2cc00f1edf31",
+      "security/reports/http-behaviour.json": "48ca76cee6b438a05e342ae6276884a20e3945b9b4e4669ab46d367ae2de23c1",
+      "security/reports/semgrep-http.json": "e2576e5e07cb831bf2ad69dbb400558f830a8c90a9f8b106b4b8ec73f41a9659"
+    },
+    "semgrep_command": "semgrep scan --config security/rules/bank.yml --metrics=off --disable-version-check --json --output security/reports/semgrep-http.json app"
   }
 }

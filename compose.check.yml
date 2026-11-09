@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:16@sha256:f9a7b9ebf6f56201f949db745e47bc423c0f0f8294bafe991cc10bf74b029657
+    environment:
+      POSTGRES_USER: auditor
+      POSTGRES_PASSWORD: ${ASSESSMENT_DB_PASSWORD:?Set ASSESSMENT_DB_PASSWORD}
+      POSTGRES_DB: riskfr_http
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auditor -d riskfr_http"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    networks: [assessment]
+  redis:
+    image: redis:7@sha256:2e3eb11462c4e3759e6972678dd051d150ff54b1e60714b3c33b701260172a90
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    networks: [assessment]
+  api:
+    image: riskfr-http-assessment
+    build: .
+    environment:
+      POSTGRES_DSN: postgresql://auditor:${ASSESSMENT_DB_PASSWORD}@postgres:5432/riskfr_http
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "127.0.0.1:${ASSESSMENT_HTTP_PORT:-18081}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/openapi.json', timeout=2)"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    networks:
+      access: {}
+      assessment:
+        aliases: [riskfr-http-api]
+  check:
+    image: riskfr-http-assessment
+    profiles: [check]
+    command: ["python", "/checks/verify_http.py"]
+    volumes:
+      - ./security/checks:/checks:ro
+    environment:
+      HTTP_BASE_URL: http://riskfr-http-api:8000
+      POSTGRES_DSN: postgresql://auditor:${ASSESSMENT_DB_PASSWORD}@postgres:5432/riskfr_http
+      REDIS_URL: redis://redis:6379/0
+      RISKFR_ISOLATED: "YES"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks: [assessment]
+networks:
+  access: {}
+  assessment:
+    internal: true

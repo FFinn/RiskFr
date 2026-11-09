@@ -1,0 +1,942 @@
+{
+  "checked_at_utc": "2026-11-09T06:03:49.014165+00:00",
+  "scope": "HTTP-запросы к работающему приложению на одноразовых PostgreSQL и Redis",
+  "source_sha256": {
+    "app/config.py": "d15a27e72366ca812fcb297e3a334a5bc57aca7bd5493a7855087b4b28ee2149",
+    "app/crud.py": "e6433a8d7dfc06f07d063451cab0ecf8eeb2c4e3cad7344f74d5d9ec0da10c3e",
+    "app/db.py": "f15c32851a24ece261351654e61e354cec41550127df0ac881ef085e3171dc36",
+    "app/main.py": "c483a1e9b93cf22eba5c32bbbc9a774f247cde2336222b38486eb8f0c5c04d53",
+    "app/redis_client.py": "99df7fdcdc5a91b435a4c5aa97633d207c1d6b0f58e15e5d255729c8409d3ce0",
+    "app/schemas.py": "7892382a4f1ebed44c7cc95e458276d344fbb70e82e52f9bde04d11e79ff1035",
+    "app/security.py": "6e5e95e6191be6d96a8a8b86eb99a563ce8af70c8bd24992519d56eee30ef7e3"
+  },
+  "versions": {
+    "fastapi": "0.115.0",
+    "asyncpg": "0.29.0",
+    "pydantic": "2.8.2",
+    "redis": "5.0.8",
+    "uvicorn": "0.30.6"
+  },
+  "passed_requests": 47,
+  "requests": [
+    {
+      "case": "Приложение отвечает",
+      "method": "GET",
+      "path": "/openapi.json",
+      "identity_header": null,
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": {
+        "paths": [
+          "/transactions",
+          "/transfer"
+        ]
+      },
+      "elapsed_seconds": 0.0113
+    },
+    {
+      "case": "Контроль: перевод владельца 1",
+      "method": "POST",
+      "path": "/transfer",
+      "identity_header": "1",
+      "request_body": {
+        "from_account_id": 1,
+        "to_account_id": 2,
+        "amount_cents": 100
+      },
+      "status": 200,
+      "expected_status": 200,
+      "response": {
+        "status": "ok",
+        "transaction_id": 1
+      },
+      "elapsed_seconds": 0.0099
+    },
+    {
+      "case": "Контроль: перевод владельца 2",
+      "method": "POST",
+      "path": "/transfer",
+      "identity_header": "2",
+      "request_body": {
+        "from_account_id": 2,
+        "to_account_id": 1,
+        "amount_cents": 50
+      },
+      "status": 200,
+      "expected_status": 200,
+      "response": {
+        "status": "ok",
+        "transaction_id": 2
+      },
+      "elapsed_seconds": 0.005
+    },
+    {
+      "case": "Контроль: история владельца 1",
+      "method": "GET",
+      "path": "/transactions",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [
+        {
+          "id": 1,
+          "from_account_id": 1,
+          "to_account_id": 2,
+          "amount_cents": 100,
+          "created_at": "2026-11-09T06:03:48.886322+00:00"
+        }
+      ],
+      "elapsed_seconds": 0.0035
+    },
+    {
+      "case": "Контроль: поиск своей операции владельцем 1",
+      "method": "GET",
+      "path": "/transactions?search=1",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [
+        {
+          "id": 1,
+          "from_account_id": 1,
+          "to_account_id": 2,
+          "amount_cents": 100,
+          "created_at": "2026-11-09T06:03:48.886322+00:00"
+        }
+      ],
+      "elapsed_seconds": 0.0031
+    },
+    {
+      "case": "Контроль: поиск чужой операции владельцем 1",
+      "method": "GET",
+      "path": "/transactions?search=2",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0024
+    },
+    {
+      "case": "Контроль: история владельца 2",
+      "method": "GET",
+      "path": "/transactions",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [
+        {
+          "id": 2,
+          "from_account_id": 2,
+          "to_account_id": 1,
+          "amount_cents": 50,
+          "created_at": "2026-11-09T06:03:48.894111+00:00"
+        }
+      ],
+      "elapsed_seconds": 0.0024
+    },
+    {
+      "case": "Контроль: поиск своей операции владельцем 2",
+      "method": "GET",
+      "path": "/transactions?search=2",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [
+        {
+          "id": 2,
+          "from_account_id": 2,
+          "to_account_id": 1,
+          "amount_cents": 50,
+          "created_at": "2026-11-09T06:03:48.894111+00:00"
+        }
+      ],
+      "elapsed_seconds": 0.0028
+    },
+    {
+      "case": "Контроль: поиск чужой операции владельцем 2",
+      "method": "GET",
+      "path": "/transactions?search=1",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0029
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 1",
+      "method": "GET",
+      "path": "/transactions?search=%27&limit=100",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0027
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 1",
+      "method": "GET",
+      "path": "/transactions?search=%27+OR+1%3D1+--&limit=100",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0025
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 1",
+      "method": "GET",
+      "path": "/transactions?search=%25%27%29+OR+1%3D1+--&limit=100",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0024
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 1",
+      "method": "GET",
+      "path": "/transactions?search=1%27+UNION+SELECT+1%2C2%2C3%2C4%2Cnow%28%29+--&limit=100",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0023
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 1",
+      "method": "GET",
+      "path": "/transactions?search=%25%27%3B+DROP+TABLE+accounts%3B+--&limit=100",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0023
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 1",
+      "method": "GET",
+      "path": "/transactions?search=%27%3B+SELECT+pg_sleep%282%29%3B+--&limit=100",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0023
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 1",
+      "method": "GET",
+      "path": "/transactions?search=%27+AND+pg_sleep%282%29+IS+NULL+--&limit=100",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0021
+    },
+    {
+      "case": "Контроль шаблона поиска, владелец 1",
+      "method": "GET",
+      "path": "/transactions?search=%25",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [
+        {
+          "id": 1,
+          "from_account_id": 1,
+          "to_account_id": 2,
+          "amount_cents": 100,
+          "created_at": "2026-11-09T06:03:48.886322+00:00"
+        }
+      ],
+      "elapsed_seconds": 0.0022
+    },
+    {
+      "case": "Контроль шаблона поиска, владелец 1",
+      "method": "GET",
+      "path": "/transactions?search=_",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [
+        {
+          "id": 1,
+          "from_account_id": 1,
+          "to_account_id": 2,
+          "amount_cents": 100,
+          "created_at": "2026-11-09T06:03:48.886322+00:00"
+        }
+      ],
+      "elapsed_seconds": 0.0022
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 2",
+      "method": "GET",
+      "path": "/transactions?search=%27&limit=100",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0022
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 2",
+      "method": "GET",
+      "path": "/transactions?search=%27+OR+1%3D1+--&limit=100",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0021
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 2",
+      "method": "GET",
+      "path": "/transactions?search=%25%27%29+OR+1%3D1+--&limit=100",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.002
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 2",
+      "method": "GET",
+      "path": "/transactions?search=1%27+UNION+SELECT+1%2C2%2C3%2C4%2Cnow%28%29+--&limit=100",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.002
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 2",
+      "method": "GET",
+      "path": "/transactions?search=%25%27%3B+DROP+TABLE+accounts%3B+--&limit=100",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.002
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 2",
+      "method": "GET",
+      "path": "/transactions?search=%27%3B+SELECT+pg_sleep%282%29%3B+--&limit=100",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0022
+    },
+    {
+      "case": "SQL: поисковая строка, владелец 2",
+      "method": "GET",
+      "path": "/transactions?search=%27+AND+pg_sleep%282%29+IS+NULL+--&limit=100",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [],
+      "elapsed_seconds": 0.0093
+    },
+    {
+      "case": "Контроль шаблона поиска, владелец 2",
+      "method": "GET",
+      "path": "/transactions?search=%25",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [
+        {
+          "id": 2,
+          "from_account_id": 2,
+          "to_account_id": 1,
+          "amount_cents": 50,
+          "created_at": "2026-11-09T06:03:48.894111+00:00"
+        }
+      ],
+      "elapsed_seconds": 0.0027
+    },
+    {
+      "case": "Контроль шаблона поиска, владелец 2",
+      "method": "GET",
+      "path": "/transactions?search=_",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [
+        {
+          "id": 2,
+          "from_account_id": 2,
+          "to_account_id": 1,
+          "amount_cents": 50,
+          "created_at": "2026-11-09T06:03:48.894111+00:00"
+        }
+      ],
+      "elapsed_seconds": 0.0025
+    },
+    {
+      "case": "Заголовок личности отсутствует",
+      "method": "GET",
+      "path": "/transactions",
+      "identity_header": null,
+      "request_body": null,
+      "status": 401,
+      "expected_status": 401,
+      "response": {
+        "detail": "Missing X-User-Id header"
+      },
+      "elapsed_seconds": 0.0016
+    },
+    {
+      "case": "SQL: заголовок личности",
+      "method": "GET",
+      "path": "/transactions",
+      "identity_header": "1 OR 1=1",
+      "request_body": null,
+      "status": 400,
+      "expected_status": 400,
+      "response": {
+        "detail": "Invalid X-User-Id"
+      },
+      "elapsed_seconds": 0.0015
+    },
+    {
+      "case": "SQL: заголовок личности",
+      "method": "GET",
+      "path": "/transactions",
+      "identity_header": "1; DROP TABLE accounts; --",
+      "request_body": null,
+      "status": 400,
+      "expected_status": 400,
+      "response": {
+        "detail": "Invalid X-User-Id"
+      },
+      "elapsed_seconds": 0.0014
+    },
+    {
+      "case": "SQL: заголовок личности",
+      "method": "GET",
+      "path": "/transactions",
+      "identity_header": "1' UNION SELECT 1 --",
+      "request_body": null,
+      "status": 400,
+      "expected_status": 400,
+      "response": {
+        "detail": "Invalid X-User-Id"
+      },
+      "elapsed_seconds": 0.0013
+    },
+    {
+      "case": "SQL и границы: предел выдачи",
+      "method": "GET",
+      "path": "/transactions?limit=1+OR+1%3D1",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 422,
+      "expected_status": 422,
+      "response": {
+        "detail": [
+          {
+            "type": "int_parsing",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "input": "1 OR 1=1"
+          }
+        ]
+      },
+      "elapsed_seconds": 0.0014
+    },
+    {
+      "case": "SQL и границы: предел выдачи",
+      "method": "GET",
+      "path": "/transactions?limit=1%3B+DROP+TABLE+accounts%3B+--",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 422,
+      "expected_status": 422,
+      "response": {
+        "detail": [
+          {
+            "type": "int_parsing",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "input": "1; DROP TABLE accounts; --"
+          }
+        ]
+      },
+      "elapsed_seconds": 0.0014
+    },
+    {
+      "case": "SQL и границы: предел выдачи",
+      "method": "GET",
+      "path": "/transactions?limit=0",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 422,
+      "expected_status": 422,
+      "response": {
+        "detail": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be greater than or equal to 1",
+            "input": "0",
+            "ctx": {
+              "ge": 1
+            }
+          }
+        ]
+      },
+      "elapsed_seconds": 0.0021
+    },
+    {
+      "case": "SQL и границы: предел выдачи",
+      "method": "GET",
+      "path": "/transactions?limit=101",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 422,
+      "expected_status": 422,
+      "response": {
+        "detail": [
+          {
+            "type": "less_than_equal",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be less than or equal to 100",
+            "input": "101",
+            "ctx": {
+              "le": 100
+            }
+          }
+        ]
+      },
+      "elapsed_seconds": 0.0025
+    },
+    {
+      "case": "Граница длины поиска",
+      "method": "GET",
+      "path": "/transactions?search=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 422,
+      "expected_status": 422,
+      "response": {
+        "detail": [
+          {
+            "type": "string_too_long",
+            "loc": [
+              "query",
+              "search"
+            ],
+            "msg": "String should have at most 100 characters",
+            "input": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "ctx": {
+              "max_length": 100
+            }
+          }
+        ]
+      },
+      "elapsed_seconds": 0.0023
+    },
+    {
+      "case": "SQL: поле from_account_id",
+      "method": "POST",
+      "path": "/transfer",
+      "identity_header": "1",
+      "request_body": {
+        "from_account_id": "1 OR 1=1",
+        "to_account_id": 2,
+        "amount_cents": 100
+      },
+      "status": 422,
+      "expected_status": 422,
+      "response": {
+        "detail": [
+          {
+            "type": "int_parsing",
+            "loc": [
+              "body",
+              "from_account_id"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "input": "1 OR 1=1"
+          }
+        ]
+      },
+      "elapsed_seconds": 0.002
+    },
+    {
+      "case": "SQL: поле from_account_id",
+      "method": "POST",
+      "path": "/transfer",
+      "identity_header": "1",
+      "request_body": {
+        "from_account_id": "1; DROP TABLE accounts; --",
+        "to_account_id": 2,
+        "amount_cents": 100
+      },
+      "status": 422,
+      "expected_status": 422,
+      "response": {
+        "detail": [
+          {
+            "type": "int_parsing",
+            "loc": [
+              "body",
+              "from_account_id"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "input": "1; DROP TABLE accounts; --"
+          }
+        ]
+      },
+      "elapsed_seconds": 0.0024
+    },
+    {
+      "case": "SQL: поле to_account_id",
+      "method": "POST",
+      "path": "/transfer",
+      "identity_header": "1",
+      "request_body": {
+        "from_account_id": 1,
+        "to_account_id": "1 OR 1=1",
+        "amount_cents": 100
+      },
+      "status": 422,
+      "expected_status": 422,
+      "response": {
+        "detail": [
+          {
+            "type": "int_parsing",
+            "loc": [
+              "body",
+              "to_account_id"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "input": "1 OR 1=1"
+          }
+        ]
+      },
+      "elapsed_seconds": 0.0019
+    },
+    {
+      "case": "SQL: поле to_account_id",
+      "method": "POST",
+      "path": "/transfer",
+      "identity_header": "1",
+      "request_body": {
+        "from_account_id": 1,
+        "to_account_id": "1; DROP TABLE accounts; --",
+        "amount_cents": 100
+      },
+      "status": 422,
+      "expected_status": 422,
+      "response": {
+        "detail": [
+          {
+            "type": "int_parsing",
+            "loc": [
+              "body",
+              "to_account_id"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "input": "1; DROP TABLE accounts; --"
+          }
+        ]
+      },
+      "elapsed_seconds": 0.0021
+    },
+    {
+      "case": "SQL: поле amount_cents",
+      "method": "POST",
+      "path": "/transfer",
+      "identity_header": "1",
+      "request_body": {
+        "from_account_id": 1,
+        "to_account_id": 2,
+        "amount_cents": "1 OR 1=1"
+      },
+      "status": 422,
+      "expected_status": 422,
+      "response": {
+        "detail": [
+          {
+            "type": "int_parsing",
+            "loc": [
+              "body",
+              "amount_cents"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "input": "1 OR 1=1"
+          }
+        ]
+      },
+      "elapsed_seconds": 0.0018
+    },
+    {
+      "case": "SQL: поле amount_cents",
+      "method": "POST",
+      "path": "/transfer",
+      "identity_header": "1",
+      "request_body": {
+        "from_account_id": 1,
+        "to_account_id": 2,
+        "amount_cents": "1; DROP TABLE accounts; --"
+      },
+      "status": 422,
+      "expected_status": 422,
+      "response": {
+        "detail": [
+          {
+            "type": "int_parsing",
+            "loc": [
+              "body",
+              "amount_cents"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "input": "1; DROP TABLE accounts; --"
+          }
+        ]
+      },
+      "elapsed_seconds": 0.0019
+    },
+    {
+      "case": "Контроль после SQL-проб, владелец 1",
+      "method": "GET",
+      "path": "/transactions?search=1",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [
+        {
+          "id": 1,
+          "from_account_id": 1,
+          "to_account_id": 2,
+          "amount_cents": 100,
+          "created_at": "2026-11-09T06:03:48.886322+00:00"
+        }
+      ],
+      "elapsed_seconds": 0.0034
+    },
+    {
+      "case": "Контроль после SQL-проб, владелец 2",
+      "method": "GET",
+      "path": "/transactions?search=2",
+      "identity_header": "2",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [
+        {
+          "id": 2,
+          "from_account_id": 2,
+          "to_account_id": 1,
+          "amount_cents": 50,
+          "created_at": "2026-11-09T06:03:48.894111+00:00"
+        }
+      ],
+      "elapsed_seconds": 0.003
+    },
+    {
+      "case": "Проверка владельца запрещает чужое списание",
+      "method": "POST",
+      "path": "/transfer",
+      "identity_header": "2",
+      "request_body": {
+        "from_account_id": 1,
+        "to_account_id": 2,
+        "amount_cents": 100
+      },
+      "status": 403,
+      "expected_status": 403,
+      "response": {
+        "detail": "Forbidden"
+      },
+      "elapsed_seconds": 0.0026
+    },
+    {
+      "case": "Подмена личности: чтение истории владельца 1",
+      "method": "GET",
+      "path": "/transactions",
+      "identity_header": "1",
+      "request_body": null,
+      "status": 200,
+      "expected_status": 200,
+      "response": [
+        {
+          "id": 1,
+          "from_account_id": 1,
+          "to_account_id": 2,
+          "amount_cents": 100,
+          "created_at": "2026-11-09T06:03:48.886322+00:00"
+        }
+      ],
+      "elapsed_seconds": 0.0027
+    },
+    {
+      "case": "Подмена личности: списание со счёта владельца 1",
+      "method": "POST",
+      "path": "/transfer",
+      "identity_header": "1",
+      "request_body": {
+        "from_account_id": 1,
+        "to_account_id": 2,
+        "amount_cents": 100
+      },
+      "status": 200,
+      "expected_status": 200,
+      "response": {
+        "status": "ok",
+        "transaction_id": 3
+      },
+      "elapsed_seconds": 0.0057
+    }
+  ],
+  "sql_injection": {
+    "search_payloads_per_user": 7,
+    "users_tested": [
+      1,
+      2
+    ],
+    "before": {
+      "accounts": [
+        {
+          "id": 1,
+          "owner_user_id": 1,
+          "balance_cents": 499950
+        },
+        {
+          "id": 2,
+          "owner_user_id": 2,
+          "balance_cents": 250050
+        }
+      ],
+      "transactions": [
+        {
+          "id": 1,
+          "from_account_id": 1,
+          "to_account_id": 2,
+          "amount_cents": 100
+        },
+        {
+          "id": 2,
+          "from_account_id": 2,
+          "to_account_id": 1,
+          "amount_cents": 50
+        }
+      ]
+    },
+    "after": {
+      "accounts": [
+        {
+          "id": 1,
+          "owner_user_id": 1,
+          "balance_cents": 499950
+        },
+        {
+          "id": 2,
+          "owner_user_id": 2,
+          "balance_cents": 250050
+        }
+      ],
+      "transactions": [
+        {
+          "id": 1,
+          "from_account_id": 1,
+          "to_account_id": 2,
+          "amount_cents": 100
+        },
+        {
+          "id": 2,
+          "from_account_id": 2,
+          "to_account_id": 1,
+          "amount_cents": 50
+        }
+      ]
+    },
+    "database_unchanged": true,
+    "conclusion": "SQL-инъекция проверенными запросами не подтверждена. Все ожидаемые ответы получены; данные до и после проб совпали.",
+    "timing_note": "Время ответов приведено для наблюдения; отдельный вывод об отсутствии SQL-инъекции по скорости не делается."
+  },
+  "identity_spoofing": {
+    "foreign_owner_rejected": 403,
+    "forged_identity": 1,
+    "visible_transaction_ids": [
+      1
+    ],
+    "created_transaction_id": 3,
+    "after": {
+      "accounts": [
+        {
+          "id": 1,
+          "owner_user_id": 1,
+          "balance_cents": 499850
+        },
+        {
+          "id": 2,
+          "owner_user_id": 2,
+          "balance_cents": 250150
+        }
+      ],
+      "transactions": [
+        {
+          "id": 1,
+          "from_account_id": 1,
+          "to_account_id": 2,
+          "amount_cents": 100
+        },
+        {
+          "id": 2,
+          "from_account_id": 2,
+          "to_account_id": 1,
+          "amount_cents": 50
+        },
+        {
+          "id": 3,
+          "from_account_id": 1,
+          "to_account_id": 2,
+          "amount_cents": 100
+        }
+      ]
+    },
+    "conclusion": "Сервер принимает произвольный X-User-Id без подтверждения личности. Это подмена личности с доступом к чужим объектам, а не SQL-инъекция."
+  }
+}
